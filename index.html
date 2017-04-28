@@ -18,23 +18,22 @@ limitations under the License.
   <head>
     <title>Bluetooth Rename Tool</title>
     <meta name="description" content="Rename a Bluetooth Smart device with Web Bluetooth.">
-
+    <link rel="icon" sizes="192x192" href="favicon.png">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
     <!-- Polymer components -->
-    <link rel="import" href="bower_components/paper-button/paper-button.html">
+   <link rel="import" href="bower_components/paper-button/paper-button.html">
     <link rel="import" href="bower_components/paper-card/paper-card.html">
     <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
     <link rel="import" href="bower_components/paper-input/paper-input.html">
     <link rel="import" href="bower_components/paper-progress/paper-progress.html">
-
     <link rel="import" href="bower_components/paper-styles/color.html">
     <link rel="stylesheet" href="bower_components/paper-styles/demo.css">
 
@@ -131,7 +130,7 @@ limitations under the License.
           errorDialog.open();
         }
 
-        function disableInputr() {
+        function disableInput() {
           nameInput.disabled = true;
           nameInput.charCounter = false;
           writeNameButton.disabled = true;
