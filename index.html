@@ -219,7 +219,10 @@ let servic;
                             dialogError.innerText = 'Disconnected';
                             errorDialog.open();
                         }
-                    })
+                    }).catch(exception => {
+                    dialogError.innerText = 'Error Occured';
+                    errorDialog.open();
+                })
                     .then(_ => progress.hidden = true)
             });
         });
