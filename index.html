@@ -201,13 +201,10 @@ limitations under the License.
                 progress.hidden = false;
                 Promise.resolve()
                     .then(_ => {
-                        let uint8arrayName = new TextEncoder("utf-8").encode(nameInput.value);
-                        console.log("Writing: ", uint8arrayName);
-                        return deviceName.writeValue(uint8arrayName)
+                        if (gattServer != null && gattServer.connected) {
+                            doneDialog.open();
+                        }
                     })
-                    .then(logProgress)
-                    .then(_ => doneDialog.open())
-                    .catch(handleError)
                     .then(_ => progress.hidden = true)
             });
 
