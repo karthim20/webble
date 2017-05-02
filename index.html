@@ -164,7 +164,7 @@ let servic;
                             throw "No Web Bluetooth support.";
                         return navigator.bluetooth.requestDevice({
                             filters: anyDeviceFilter(),
-                            optionalServices: ['generic_access']
+                            optionalServices: ['00009800-0000-1000-8000-00177A00000']
                         })
                     })
                     .then(logProgress)
@@ -179,7 +179,7 @@ let servic;
                     .then(logProgress)
                     .then(server => {
                         gattServer = server;
-                        return server.getPrimaryService('generic_access');
+                        return server.getPrimaryService('00009800-0000-1000-8000-00177A00000');
                     })
                     .then(logProgress)
                     .then(service => service.getCharacteristic('0000AA00-0000-1000-8000-00177A000002'))
