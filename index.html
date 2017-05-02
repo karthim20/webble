@@ -115,7 +115,6 @@ limitations under the License.
 
     <script>
         "use strict";
-        let gattServer;
         document.addEventListener('WebComponentsReady', function() {
             function logProgress(x) {
                 console.log("Progress:", x);
@@ -158,7 +157,6 @@ limitations under the License.
                     .then(_ => {
                         if (!navigator.bluetooth)
                             throw "No Web Bluetooth support.";
-
                         return navigator.bluetooth.requestDevice({
                             filters: anyDeviceFilter(),
                             optionalServices: ['generic_access']
@@ -198,9 +196,7 @@ limitations under the License.
                 progress.hidden = false;
                 Promise.resolve()
                     .then(_ => {
-                        if (gattServer != null && gattServer.connected) {
-                            doneDialog.open();
-                        }
+
                     })
                     .then(_ => progress.hidden = true)
             });
