@@ -174,7 +174,7 @@ limitations under the License.
                     })
                     .then(logProgress)
                     .then(server => {
-                        gattServer = service;
+                        gattServer = server;
                         server.getPrimaryService("generic_access")
                     })
                     .then(logProgress)
