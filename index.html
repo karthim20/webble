@@ -25,7 +25,7 @@ limitations under the License.
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-   
+
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
     <!-- Polymer components -->
@@ -115,9 +115,6 @@ limitations under the License.
 
     <script>
       "use strict";
-      let gattServer;
-      let commandService;
-      let writeCharacteristic;
       document.addEventListener('WebComponentsReady', function() {
         function logProgress(x) {
           console.log("Progress:", x);
@@ -177,8 +174,6 @@ limitations under the License.
           })
           .then(logProgress)
           .then(server => {
-              console.log('> Found GATT server');
-              gattServer = server;
               server.getPrimaryService("generic_access")
           })
           .then(logProgress)
@@ -205,11 +200,6 @@ limitations under the License.
           progress.hidden = false;
           Promise.resolve()
           .then(_ => {
-              if (gattServer != null && gattServer.connected)
-              {
-                  console.log('connected...');
-                  nameInput.value = 'connected';
-              }
             let uint8arrayName = new TextEncoder("utf-8").encode(nameInput.value);
             console.log("Writing: ", uint8arrayName);
             return deviceName.writeValue(uint8arrayName)
