@@ -120,6 +120,7 @@ limitations under the License.
 
             let gattServer;
 let mainDevice;
+let servic;
             function logProgress(x) {
                 console.log("Progress:", x);
                 return x;
@@ -206,7 +207,7 @@ let mainDevice;
                     .then(_ => {
                         if (gattServer != null && gattServer.connected)
                         {
-                            return gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002').catch(error => {
+                          return  servic =  gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002').catch(error => {
                                 logProgress(error);
                                 throw "Unable to get primary service";
                             }).then(service => service.getCharacteristic("0000AA00-0000-1000-8000-00177A000002")).catch(error => {
