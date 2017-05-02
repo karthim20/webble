@@ -18,19 +18,17 @@ limitations under the License.
   <head>
     <title>BLE Smart Devices Discovery</title>
     <meta name="description" content="BLE Smart Devices Discovery">
-    <link rel="shortcut icon" href="https://www.hidglobal.com/sites/default/files/hid-favicon_0.ico" type="image/vnd.microsoft.icon" />
-    <!--
-  <link rel="icon" sizes="192x192" href="favicon.png">
-  -->
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="favicon.png">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
-  <!-- Polymer components -->
+    <!-- Polymer components -->
    <link rel="import" href="bower_components/paper-button/paper-button.html">
     <link rel="import" href="bower_components/paper-card/paper-card.html">
     <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
@@ -85,20 +83,23 @@ limitations under the License.
     </style>
   </head>
   <body unresolved>
-    <div id="cards" >
+    <div id="cards">
       <paper-card heading="Discovery Nearby BLE Devices">
         <div class="card-content">
-          <paper-button id="connectButton" raised class="colorful">Discover Nearby Devices</paper-button>
+          <paper-progress id="progress" indeterminate hidden="true"></paper-progress>
         </div>
-          <div class="card-content">
-              <paper-progress id="progress" indeterminate hidden="true"></paper-progress>
-          </div>
+      </paper-card>
+
+      <paper-card>
+        <div class="card-content">
+          <paper-button id="connectButton" raised class="colorful">Discover Devices</paper-button>
+        </div>
       </paper-card>
 
       <paper-card>
         <div class="card-content">
           <paper-input id="nameInput" label="Device Name" disabled></paper-input>
-          <paper-button id="writeNameButton" class="colorful" disabled>Change Device Name</paper-button>
+          <paper-button id="writeNameButton" class="colorful" disabled>Locate Device</paper-button>
         </div>
       </paper-card>
 
@@ -110,11 +111,13 @@ limitations under the License.
       <paper-dialog id="doneDialog">
         <h2>Done!</h2>
       </paper-dialog>
-
     </div>
 
     <script>
       "use strict";
+      let gattServer;
+      let commandService;
+      let writeCharacteristic;
       document.addEventListener('WebComponentsReady', function() {
         function logProgress(x) {
           console.log("Progress:", x);
@@ -166,13 +169,18 @@ limitations under the License.
           .then(logProgress)
           .then(device => {
             nameInput.value = "";
+              console.log('Connecting to GATT Server...');
             return device.gatt.connect().catch(error => {
               logProgress(error);
               throw "Unable to connect. Some devices refuse connections.";
             });
           })
           .then(logProgress)
-          .then(server => server.getPrimaryService("00009800-0000-1000-8000-00177A000002"))
+          .then(server => {
+              console.log('> Found GATT server');
+              gattServer = server;
+              server.getPrimaryService("generic_access")
+          })
           .then(logProgress)
           .then(service => service.getCharacteristic("gap.device_name"))
           .then(logProgress)
@@ -197,6 +205,11 @@ limitations under the License.
           progress.hidden = false;
           Promise.resolve()
           .then(_ => {
+              if (gattServer != null && gattServer.connected)
+              {
+                  console.log('connected...');
+                  nameInput.value = 'connected';
+              }
             let uint8arrayName = new TextEncoder("utf-8").encode(nameInput.value);
             console.log("Writing: ", uint8arrayName);
             return deviceName.writeValue(uint8arrayName)
