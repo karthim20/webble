@@ -183,12 +183,12 @@ let seosService;
                         seosService = server.getPrimaryService('00009800-0000-1000-8000-00177a000002');
                         if(seosService != null )
                         {
-                            dialogError.innerText = seosService.toString();
+                            dialogError.innerText = seosService.id;
                             errorDialog.open();
                         }
                         return seosService;
 
-                    })
+                    }).catch(handleError)
                     .then(logProgress)
             });
 
