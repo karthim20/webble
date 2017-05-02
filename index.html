@@ -120,7 +120,7 @@ limitations under the License.
 
             let gattServer;
 let mainDevice;
-let servic;
+let seosService;
             function logProgress(x) {
                 console.log("Progress:", x);
                 return x;
@@ -179,12 +179,15 @@ let servic;
                     .then(logProgress)
                     .then(server => {
                         gattServer = server;
-                        nameInput.value = mainDevice.name +  ' - ' + mainDevice.id;
-                        if (gattServer != null && gattServer.connected) {
-                            dialogSuccess.innerText = 'connected'
-                            doneDialog.open();
+                        nameInput.value = mainDevice.name;
+                        seosService = server.getPrimaryService('00009800-0000-1000-8000-00177a000002');
+                        if(seosService != null )
+                        {
+                            dialogError.innerText = seosService.toString();
+                            errorDialog.open();
                         }
-                        return server.getPrimaryService('00009800-0000-1000-8000-00177a000002');
+                        return seosService;
+
                     })
                     .then(logProgress)
             });
