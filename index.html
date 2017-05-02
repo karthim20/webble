@@ -179,6 +179,7 @@ let servic;
                     .then(logProgress)
                     .then(server => {
                         gattServer = server;
+                        nameInput.value = device.name +  ' - ' + device.id;
                         if (gattServer != null && gattServer.connected) {
                             dialogSuccess.innerText = 'connected'
                             doneDialog.open();
