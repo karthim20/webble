@@ -119,7 +119,7 @@ limitations under the License.
         document.addEventListener('WebComponentsReady', function() {
 
             let gattServer;
-
+let mainDevice;
             function logProgress(x) {
                 console.log("Progress:", x);
                 return x;
@@ -169,6 +169,7 @@ limitations under the License.
                     .then(logProgress)
                     .then(device => {
                         nameInput.value = "";
+                        mainDevice =  device;
                         return device.gatt.connect().catch(error => {
                             logProgress(error);
                             throw "Unable to connect. Some devices refuse connections.";
@@ -207,7 +208,14 @@ limitations under the License.
                         {
                             dialogSuccess.innerText = 'Connected';
                             doneDialog.open();
-                            return gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002');
+                            return gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002')
+                                .then(logProgress)
+                                .then(service => service.getCharacteristic("0000AA00-0000-1000-8000-00177A000002"))
+                                .then(logProgress)
+                                .then(characteristic => {
+                                    dialogSuccess.innerText = 'Found write characteristic';
+                                    doneDialog.open();
+                                })
                         }
                         else
                         {
