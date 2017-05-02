@@ -207,18 +207,12 @@ let servic;
                     .then(_ => {
                         if (gattServer != null && gattServer.connected)
                         {
-                          return  servic =  gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002').catch(error => {
+                             servic =  gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002').catch(error => {
                                 logProgress(error);
                                 throw "Unable to get primary service";
-                            }).then(service => service.getCharacteristic("0000AA00-0000-1000-8000-00177A000002")).catch(error => {
-                            logProgress(error);
-                            throw "Unable to get Characteristic";
-                        })
-                                .then(logProgress)
-                                .then(characteristic => {
-                                    dialogSuccess.innerText = 'Found write characteristic';
-                                    doneDialog.open();
-                                })
+                            });
+                            dialogError.innerText = servic;
+                            errorDialog.open();
                         }
                         else
                         {
