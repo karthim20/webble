@@ -207,10 +207,11 @@ limitations under the License.
                         {
                             dialogSuccess.innerText = 'Connected';
                             doneDialog.open();
+                            return gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002');
                         }
                         else
                         {
-                            dialogError.innerText = 'disconnected';
+                            dialogError.innerText = 'Disconnected';
                             errorDialog.open();
                         }
                     })
