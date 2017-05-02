@@ -172,7 +172,7 @@ limitations under the License.
                             throw "Unable to connect. Some devices refuse connections.";
                         });
                     })
-                then(logProgress)
+                    .then(logProgress)
                     .then(server => server.getPrimaryService("generic_access"))
                     .then(logProgress)
                     .then(service => service.getCharacteristic("gap.device_name"))
