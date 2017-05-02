@@ -115,6 +115,7 @@ limitations under the License.
 
     <script>
         "use strict";
+        let gattServer;
         document.addEventListener('WebComponentsReady', function() {
             function logProgress(x) {
                 console.log("Progress:", x);
@@ -172,7 +173,10 @@ limitations under the License.
                         });
                     })
                     .then(logProgress)
-                    .then(server => server.getPrimaryService("generic_access"))
+                    .then(server => {
+                        gattServer = service;
+                        server.getPrimaryService("generic_access")
+                    })
                     .then(logProgress)
                     .then(service => service.getCharacteristic("gap.device_name"))
                     .then(logProgress)
