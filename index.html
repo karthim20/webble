@@ -179,6 +179,10 @@ let servic;
                     .then(logProgress)
                     .then(server => {
                         gattServer = server;
+                        if (gattServer != null && gattServer.connected) {
+                            dialogSuccess.innerText = 'connected'
+                            doneDialog.open();
+                        }
                         return server.getPrimaryService('00009800-0000-1000-8000-00177a000002');
                     })
                     .then(logProgress)
@@ -207,11 +211,6 @@ let servic;
                     .then(_ => {
                         if (gattServer != null && gattServer.connected)
                         {
-                             servic =  gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002').catch(error => {
-                                throw "Unable to get primary service";
-                            });
-                            dialogError.innerText = servic;
-                            errorDialog.open();
                         }
                         else
                         {
