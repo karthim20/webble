@@ -208,9 +208,15 @@ let mainDevice;
                         {
                             dialogSuccess.innerText = 'Connected';
                             doneDialog.open();
-                            return gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002')
+                            return gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002').catch(error => {
+                                logProgress(error);
+                                throw "Unable to get primary service";
+                            })
                                 .then(logProgress)
-                                .then(service => service.getCharacteristic("0000AA00-0000-1000-8000-00177A000002"))
+                                .then(service => service.getCharacteristic("0000AA00-0000-1000-8000-00177A000002")).catch(error => {
+                            logProgress(error);
+                            throw "Unable to get Characteristic";
+                        })
                                 .then(logProgress)
                                 .then(characteristic => {
                                     dialogSuccess.innerText = 'Found write characteristic';
