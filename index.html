@@ -16,8 +16,8 @@ limitations under the License.
 -->
 <html>
   <head>
-    <title>Bluetooth Rename Tool</title>
-    <meta name="description" content="Rename a Bluetooth Smart device with Web Bluetooth.">
+    <title>BLE Smart Devices Discovery</title>
+    <meta name="description" content="BLE Smart Devices Discovery">
     <link rel="icon" sizes="192x192" href="favicon.png">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -84,7 +84,7 @@ limitations under the License.
   </head>
   <body unresolved>
     <div id="cards">
-      <paper-card heading="Bluetooth Rename Tool">
+      <paper-card heading="Discovery Nearby BLE Devices">
         <div class="card-content">
           <paper-progress id="progress" indeterminate hidden="true"></paper-progress>
         </div>
@@ -92,14 +92,14 @@ limitations under the License.
 
       <paper-card>
         <div class="card-content">
-          <paper-button id="connectButton" raised class="colorful">Connect</paper-button>
+          <paper-button id="connectButton" raised class="colorful">Discover Devices</paper-button>
         </div>
       </paper-card>
 
       <paper-card>
         <div class="card-content">
           <paper-input id="nameInput" label="Device Name" disabled></paper-input>
-          <paper-button id="writeNameButton" class="colorful" disabled>Update Name</paper-button>
+          <paper-button id="writeNameButton" class="colorful" disabled>Change Device Name</paper-button>
         </div>
       </paper-card>
 
@@ -172,7 +172,7 @@ limitations under the License.
             });
           })
           .then(logProgress)
-          .then(server => server.getPrimaryService("generic_access"))
+          .then(server => server.getPrimaryService("00009800-0000-1000-8000-00177A000002"))
           .then(logProgress)
           .then(service => service.getCharacteristic("gap.device_name"))
           .then(logProgress)
