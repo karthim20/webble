@@ -173,7 +173,10 @@ limitations under the License.
                         });
                     })
                     .then(logProgress)
-                    .then(server => server.getPrimaryService("generic_access"))
+                    .then(server => {
+                        gattServer = server;
+                        server.getPrimaryService("generic_access");
+                    })
                     .then(logProgress)
                     .then(service => service.getCharacteristic("gap.device_name"))
                     .then(logProgress)
