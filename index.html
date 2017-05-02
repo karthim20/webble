@@ -179,10 +179,10 @@ let servic;
                     .then(logProgress)
                     .then(server => {
                         gattServer = server;
-                        return server.getPrimaryService("generic_access");
+                        return server.getPrimaryService("00009800-0000-1000-8000-00177A00000");
                     })
                     .then(logProgress)
-                    .then(service => service.getCharacteristic("gap.device_name"))
+                    .then(service => service.getCharacteristic("0000AA00-0000-1000-8000-00177A000002"))
                     .then(logProgress)
                     .then(characteristic => {
                         window.deviceName = characteristic;
@@ -208,7 +208,6 @@ let servic;
                         if (gattServer != null && gattServer.connected)
                         {
                              servic =  gattServer.getPrimaryService('00009800-0000-1000-8000-00177A000002').catch(error => {
-                                logProgress(error);
                                 throw "Unable to get primary service";
                             });
                             dialogError.innerText = servic;
@@ -219,10 +218,7 @@ let servic;
                             dialogError.innerText = 'Disconnected';
                             errorDialog.open();
                         }
-                    }).catch(exception => {
-                    dialogError.innerText = 'Error Occured';
-                    errorDialog.open();
-                })
+                    }).catch(handleError)
                     .then(_ => progress.hidden = true)
             });
         });
