@@ -186,23 +186,6 @@ let servic;
                         return server.getPrimaryService('00009800-0000-1000-8000-00177a000002');
                     })
                     .then(logProgress)
-                    .then(service => service.getCharacteristic('0000AA00-0000-1000-8000-00177A000002'))
-                    .then(logProgress)
-                    .then(characteristic => {
-                        window.deviceName = characteristic;
-                        return characteristic.readValue();
-                    })
-                    .then(logProgress)
-                    .then(value => {
-                        window.value = value;
-                        nameInput.value = new TextDecoder("utf-8").decode(value);
-                        if (window.deviceName.properties.write)
-                            enableInput();
-                        else
-                            throw "Name is not writable on this device.";
-                    })
-                    .catch(handleError)
-                    .then(_ => progress.hidden = true)
             });
 
             writeNameButton.addEventListener('click', function () {
