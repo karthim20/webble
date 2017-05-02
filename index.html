@@ -179,10 +179,10 @@ let servic;
                     .then(logProgress)
                     .then(server => {
                         gattServer = server;
-                        return server.getPrimaryService("00009800-0000-1000-8000-00177A00000");
+                        return server.getPrimaryService('00009800-0000-1000-8000-00177A00000');
                     })
                     .then(logProgress)
-                    .then(service => service.getCharacteristic("0000AA00-0000-1000-8000-00177A000002"))
+                    .then(service => service.getCharacteristic('0000AA00-0000-1000-8000-00177A000002'))
                     .then(logProgress)
                     .then(characteristic => {
                         window.deviceName = characteristic;
