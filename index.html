@@ -160,7 +160,7 @@ limitations under the License.
 
             return navigator.bluetooth.requestDevice({
               filters: anyDeviceFilter(),
-              optionalServices: ['00009800-0000-1000-8000-00177A000002']
+              optionalServices: ['generic_access']
             })
           })
           .then(logProgress)
