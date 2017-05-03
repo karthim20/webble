@@ -99,6 +99,10 @@ limitations under the License.
       <paper-card>
         <div class="card-content">
           <paper-input id="nameInput" label="Device Name" disabled></paper-input>
+            <paper-textarea id="supportCharacteristic" label="Supported Characteristic">
+                <div id="statusText">Supported Characteristic </div>
+            </paper-textarea>
+        <div></div>
           <paper-button id="writeNameButton" class="colorful" disabled>Locate Device</paper-button>
         </div>
       </paper-card>
@@ -178,19 +182,36 @@ let seosService;
                     })
                     .then(logProgress)
                     .then(server => {
-                        gattServer = server;
-                        nameInput.value = mainDevice.name;
-                        seosService = server.getPrimaryService('00009800-0000-1000-8000-00177a000002');
-                        if(seosService != null )
-                        {
-                            dialogError.innerText = seosService.id;
-                            errorDialog.open();
-                        }
-                        return seosService;
-
+                        // Note that we could also get all services that match a specific UUID by
+                        // passing it to getPrimaryServices().
+                        log('Getting Services...');
+                        return server.getPrimaryServices();
+                    })
+                    .then(services => {
+                        log('Getting Characteristics...');
+                        let queue = Promise.resolve();
+                        services.forEach(service => {
+                            queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
+                                log('> Service: ' + service.uuid);
+                                characteristics.forEach(characteristic => {
+                                    statusText.innerText =   characteristic.uuid + ' ' +
+                                        getSupportedProperties(characteristic);
+                                });
+                            }));
+                        });
+                        return queue;
                     }).catch(handleError)
-                    .then(logProgress)
             });
+
+            function getSupportedProperties(characteristic) {
+                let supportedProperties = [];
+                for (const p in characteristic.properties) {
+                    if (characteristic.properties[p] === true) {
+                        supportedProperties.push(p.toUpperCase());
+                    }
+                }
+                return '[' + supportedProperties.join(', ') + ']';
+            }
 
             writeNameButton.addEventListener('click', function () {
                 progress.hidden = false;
