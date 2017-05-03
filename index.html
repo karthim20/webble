@@ -199,7 +199,8 @@ limitations under the License.
                                 services.forEach(service => {
                                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
                                         characteristics.forEach(characteristic => {
-                                            statusText.innerText = characteristic.uuid + ' ' + getSupportedProperties(characteristic);
+                                            statusText.innerText = 'Available UUID: \n' + characteristic.uuid  +'\n' + 'Available Properties: \n' +
+                                                getSupportedProperties(characteristic);
                                         });
                                     }));
                                 });
