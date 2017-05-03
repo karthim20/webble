@@ -40,10 +40,12 @@ limitations under the License.
     <style is="custom-style">
       paper-button {
         display: block;
-        margin-bottom: 24px;
+        margin-bottom: 15px;
+          text-align: center;
       }
       paper-button.colorful {
         color: #4285f4;
+          text-align: center;
       }
       paper-button[raised].colorful {
         background: #4285f4;
@@ -64,10 +66,12 @@ limitations under the License.
       paper-button.blue {
         color: var(--paper-light-blue-500);
         paper-button-flat-focus-color: var(--paper-light-blue-50);
+          text-align: center;
       }
       body {
         background-color: var(--paper-grey-50);
       }
+
       #cards {
         margin-left: auto;
         margin-right: auto;
@@ -76,35 +80,41 @@ limitations under the License.
       paper-card {
         margin-bottom: 16px;
         width: 100%;
+          --paper-card-header-color:white ;
+          --paper-card-header: {
+              background-color: #3949AB;
+          }
       }
       paper-progress {
         width: 100%;
       }
+      paper-card-header
+      {
+          background-color:  #3949AB;
+      }
+        #mess
+        {
+            margin: 15px;
+        }
     </style>
   </head>
   <body unresolved>
     <div id="cards">
-      <paper-card heading="Discovery Nearby BLE Devices">
-        <div class="card-content">
-          <paper-progress id="progress" indeterminate hidden="true"></paper-progress>
-        </div>
+      <paper-card heading="HID SEOS Discovery From Web">
+              <div secondary id="mess">Control SEOS powered BLE-Enabled World from Web</div>
+          <div class="card-content">
+              <paper-button id="connectButton" raised class="colorful">Discover SEOS Devices</paper-button>
+          </div>
+          <div class="card-content">
+              <paper-progress id="progress" indeterminate hidden="true"></paper-progress>
+          </div>
+          <div class="card-content">
+              <paper-input id="nameInput" label="Device Name" disabled></paper-input>
+              <h3 style="color:#e9005f" >Supported Characteristic </h3>
+              <div id="statusText"></div>
+              <paper-button id="writeNameButton"  class="colorful" disabled>Locate Device</paper-button>
+          </div>
       </paper-card>
-
-      <paper-card>
-        <div class="card-content">
-          <paper-button id="connectButton" raised class="colorful">Discover Devices</paper-button>
-        </div>
-      </paper-card>
-
-      <paper-card>
-        <div class="card-content">
-          <paper-input id="nameInput" label="Device Name" disabled></paper-input>
-                <div >Supported Characteristic </div>
-            <div id="statusText"></div>
-          <paper-button id="writeNameButton"  class="colorful" disabled>Locate Device</paper-button>
-        </div>
-      </paper-card>
-
       <paper-dialog id="errorDialog">
         <h2>Error</h2>
         <p id="dialogError">Could not connect to bluetooth device!</p>
@@ -121,8 +131,9 @@ limitations under the License.
         document.addEventListener('WebComponentsReady', function() {
 
             let gattServer;
-let mainDevice;
-let seosService;
+            let mainDevice;
+            let seosService;
+
             function logProgress(x) {
                 console.log("Progress:", x);
                 return x;
@@ -172,7 +183,7 @@ let seosService;
                             })
                             .then(logProgress)
                             .then(device => {
-                                nameInput.value = "";
+                                nameInput.value = device.name;
                                 mainDevice = device;
                                 return device.gatt.connect().catch(error => {
                                     logProgress(error);
@@ -181,9 +192,6 @@ let seosService;
                             })
                             .then(logProgress)
                             .then(server => {
-                                // Note that we could also get all services that match a specific UUID by
-                                // passing it to getPrimaryServices().
-
                                 return server.getPrimaryServices();
                             })
                             .then(services => {
@@ -199,7 +207,7 @@ let seosService;
                             }).catch(handleError)
                     });
             });
-            
+
                 function getSupportedProperties(characteristic) {
                     let supportedProperties = [];
                     for (const p in characteristic.properties) {
@@ -215,6 +223,7 @@ let seosService;
                     Promise.resolve()
                         .then(_ => {
                             if (gattServer != null && gattServer.connected) {
+
                             }
                             else {
                                 dialogError.innerText = 'Disconnected';
