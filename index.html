@@ -82,19 +82,19 @@ limitations under the License.
         width: 100%;
           --paper-card-header-color:white ;
           --paper-card-header: {
-              background-color: #3949AB;
+              background-color: #00549B;
           }
       }
       paper-progress {
         width: 100%;
       }
-      paper-card-header
-      {
-          background-color:  #3949AB;
-      }
         #mess
         {
             margin: 15px;
+        }
+        #nameInput
+        {
+            color: chocolate;
         }
     </style>
   </head>
@@ -205,6 +205,7 @@ limitations under the License.
                                 });
                                 return queue;
                             }).catch(handleError)
+                            .then(_ => progress.hidden = true)
                     });
             });
 
