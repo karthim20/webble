@@ -197,7 +197,7 @@ limitations under the License.
                                         characteristics.forEach(characteristic => {
                                             let availProp = 'Available UUID:';
                                             let availChar = 'Available Properties:';
-                                            statusText.innerText = availProp + '\n' + characteristic.uuid  +'\n'
+                                            statusText.innerText = availProp + '\n' + characteristic.uuid  +'\n\n'
                                                 +  availChar + '\n' +
                                                 getSupportedProperties(characteristic);
                                         });
