@@ -199,7 +199,7 @@ limitations under the License.
                                 services.forEach(service => {
                                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
                                         characteristics.forEach(characteristic => {
-                                            statusText.innerText = 'Available UUID: \n' + characteristic.uuid  +'\n' + 'Available Properties: \n' +
+                                            statusText.innerText = '<b> Available UUID: <\b>\n' + characteristic.uuid  +'\n' + '<b>Available Properties: <\b>\n' +
                                                 getSupportedProperties(characteristic);
                                         });
                                     }));
@@ -217,7 +217,7 @@ limitations under the License.
                             supportedProperties.push(p.toUpperCase());
                         }
                     }
-                    return '[' + supportedProperties.join(', ') + ']';
+                    return supportedProperties.join('\n');
                 }
 
                 writeNameButton.addEventListener('click', function () {
