@@ -184,7 +184,6 @@ let seosService;
                     .then(server => {
                         // Note that we could also get all services that match a specific UUID by
                         // passing it to getPrimaryServices().
-                        log('Getting Services...');
                         return server.getPrimaryServices();
                     })
                     .then(services => {
@@ -192,7 +191,6 @@ let seosService;
                         let queue = Promise.resolve();
                         services.forEach(service => {
                             queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
-                                log('> Service: ' + service.uuid);
                                 characteristics.forEach(characteristic => {
                                     statusText.innerText =   characteristic.uuid + ' ' +
                                         getSupportedProperties(characteristic);
