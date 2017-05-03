@@ -167,9 +167,10 @@ let seosService;
                         if (!navigator.bluetooth)
                             throw "No Web Bluetooth support.";
                         return navigator.bluetooth.requestDevice({
-                            filters: anyDeviceFilter(),
-                            optionalServices: ['00009800-0000-1000-8000-00177a000002']
-                        })
+                            filters:
+                                [{
+                                    services: ['00009800-0000-1000-8000-00177a000002']
+                                }]
                     })
                     .then(logProgress)
                     .then(device => {
