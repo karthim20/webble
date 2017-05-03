@@ -99,11 +99,9 @@ limitations under the License.
       <paper-card>
         <div class="card-content">
           <paper-input id="nameInput" label="Device Name" disabled></paper-input>
-            <paper-textarea id="supportCharacteristic" label="Supported Characteristic">
-                <div id="statusText">Supported Characteristic </div>
-            </paper-textarea>
-        <div></div>
-          <paper-button id="writeNameButton" class="colorful" disabled>Locate Device</paper-button>
+                <div >Supported Characteristic </div>
+            <div id="statusText"></div>
+          <paper-button id="writeNameButton"  class="colorful" disabled>Locate Device</paper-button>
         </div>
       </paper-card>
 
@@ -166,67 +164,66 @@ let seosService;
                     .then(_ => {
                         if (!navigator.bluetooth)
                             throw "No Web Bluetooth support.";
-                        return navigator.bluetooth.requestDevice({
-                            filters:
-                                [{
+                        return navigator.bluetooth.requestDevice(
+                            {
+                                filters: [{
                                     services: ['00009800-0000-1000-8000-00177a000002']
                                 }]
-                    })
-                    .then(logProgress)
-                    .then(device => {
-                        nameInput.value = "";
-                        mainDevice =  device;
-                        return device.gatt.connect().catch(error => {
-                            logProgress(error);
-                            throw "Unable to connect. Some devices refuse connections.";
-                        });
-                    })
-                    .then(logProgress)
-                    .then(server => {
-                        // Note that we could also get all services that match a specific UUID by
-                        // passing it to getPrimaryServices().
-
-                        return server.getPrimaryServices();
-                    })
-                    .then(services => {
-                        let queue = Promise.resolve();
-                        services.forEach(service => {
-                            queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
-                                characteristics.forEach(characteristic => {
-                                    statusText.innerText =   characteristic.uuid + ' ' +
-                                        getSupportedProperties(characteristic);
+                            })
+                            .then(logProgress)
+                            .then(device => {
+                                nameInput.value = "";
+                                mainDevice = device;
+                                return device.gatt.connect().catch(error => {
+                                    logProgress(error);
+                                    throw "Unable to connect. Some devices refuse connections.";
                                 });
-                            }));
-                        });
-                        return queue;
-                    }).catch(handleError)
-            });
+                            })
+                            .then(logProgress)
+                            .then(server => {
+                                // Note that we could also get all services that match a specific UUID by
+                                // passing it to getPrimaryServices().
 
-            function getSupportedProperties(characteristic) {
-                let supportedProperties = [];
-                for (const p in characteristic.properties) {
-                    if (characteristic.properties[p] === true) {
-                        supportedProperties.push(p.toUpperCase());
+                                return server.getPrimaryServices();
+                            })
+                            .then(services => {
+                                let queue = Promise.resolve();
+                                services.forEach(service => {
+                                    queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
+                                        characteristics.forEach(characteristic => {
+                                            statusText.innerText = characteristic.uuid + ' ' + getSupportedProperties(characteristic);
+                                        });
+                                    }));
+                                });
+                                return queue;
+                            }).catch(handleError)
+                    });
+            });
+            
+                function getSupportedProperties(characteristic) {
+                    let supportedProperties = [];
+                    for (const p in characteristic.properties) {
+                        if (characteristic.properties[p] === true) {
+                            supportedProperties.push(p.toUpperCase());
+                        }
                     }
+                    return '[' + supportedProperties.join(', ') + ']';
                 }
-                return '[' + supportedProperties.join(', ') + ']';
-            }
 
-            writeNameButton.addEventListener('click', function () {
-                progress.hidden = false;
-                Promise.resolve()
-                    .then(_ => {
-                        if (gattServer != null && gattServer.connected)
-                        {
-                        }
-                        else
-                        {
-                            dialogError.innerText = 'Disconnected';
-                            errorDialog.open();
-                        }
-                    }).catch(handleError)
-                    .then(_ => progress.hidden = true)
-            });
+                writeNameButton.addEventListener('click', function () {
+                    progress.hidden = false;
+                    Promise.resolve()
+                        .then(_ => {
+                            if (gattServer != null && gattServer.connected) {
+                            }
+                            else {
+                                dialogError.innerText = 'Disconnected';
+                                errorDialog.open();
+                            }
+                        }).catch(handleError)
+                        .then(_ => progress.hidden = true)
+                });
+
         });
     </script>
   </body>
