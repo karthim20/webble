@@ -203,7 +203,7 @@ limitations under the License.
                                             let availChar = 'Available Properties:';
                                             statusText.innerText = availProp + '\n' + characteristic.uuid  +'\n\n'
                                                 +  availChar + '\n' +
-                                                getSupportedProperties(characteristic) + '\n' ;
+                                                getSupportedProperties(characteristic) + '\n\n' ;
                                         });
                                        return writeCharacteristic = service.getCharacteristic("0000aa00-0000-1000-8000-00177a000002");
                                     }));
