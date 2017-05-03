@@ -133,6 +133,7 @@ limitations under the License.
             let gattServer;
             let mainDevice;
             let seosService;
+            let writeCharacteristic;
 
             function logProgress(x) {
                 console.log("Progress:", x);
@@ -202,8 +203,11 @@ limitations under the License.
                                                 getSupportedProperties(characteristic);
                                         });
                                     }));
+
                                 });
-                                return queue;
+                                services.getCharacteristic('writeWithoutResponse');
+                            }).then(characteristic => {
+                                writeCharacteristic = characteristic;
                             }).catch(handleError)
                             .then(_ => progress.hidden = true)
                     });
