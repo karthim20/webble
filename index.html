@@ -191,11 +191,13 @@ limitations under the License.
                             .then(server => {
                                 return server.getPrimaryServices();
                             })
-                            .then(services => {
+                            .then(services =>
+                            {
                                 let queue = Promise.resolve();
                                 services.forEach(service => {
                                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
-                                        characteristics.forEach(characteristic => {
+                                        characteristics.forEach(characteristic =>
+                                        {
                                             let availProp = 'Available UUID:';
                                             let availChar = 'Available Properties:';
                                             statusText.innerText = availProp + '\n' + characteristic.uuid  +'\n\n'
@@ -203,9 +205,9 @@ limitations under the License.
                                                 getSupportedProperties(characteristic) + '\n' ;
                                         });
                                     }));
-
+                                    return service.getCharacteristic('writeWithoutResponse');
                                 });
-                                services.getCharacteristic('writeWithoutResponse');
+
                             }).then(characteristic => {
                                 writeCharacteristic = characteristic;
                             }).catch(handleError)
