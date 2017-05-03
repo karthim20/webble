@@ -194,7 +194,8 @@ limitations under the License.
                             .then(services =>
                             {
                                 let queue = Promise.resolve();
-                                services.forEach(service => {
+                                services.forEach(service =>
+                                {
                                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
                                         characteristics.forEach(characteristic =>
                                         {
@@ -204,12 +205,12 @@ limitations under the License.
                                                 +  availChar + '\n' +
                                                 getSupportedProperties(characteristic) + '\n' ;
                                         });
+                                       return writeCharacteristic = service.getCharacteristic("0000aa00-0000-1000-8000-00177a000002");
                                     }));
-                                    return service.getCharacteristic('writeWithoutResponse');
                                 });
 
                             }).then(characteristic => {
-                                writeCharacteristic = characteristic;
+
                             }).catch(handleError)
                             .then(_ => progress.hidden = true)
                     });
